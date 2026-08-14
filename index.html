@@ -194,7 +194,7 @@
       database.ref('qr_links/' + qrId).once('value', (snapshot) => {
         if (snapshot.exists()) {
           const targetUrl = snapshot.val().target_url;
-          let seconds = 3; // Kaç saniye reklam görünsün? (Buradan değiştirebilirsin)
+          let seconds = 5; // Kaç saniye reklam görünsün? (Buradan değiştirebilirsin)
           const timerEl = document.getElementById('timer');
           timerEl.innerText = seconds;
 
