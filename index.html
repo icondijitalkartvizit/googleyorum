@@ -59,16 +59,17 @@
 }
 .bottom-phone-box {
   position: fixed;
-  bottom: 200px; /* Ekranın alt kenarından mesafe */
+  bottom: 20px;
   left: 50%;
-  transform: translateX(-50%); /* Tam yatayda ortalar */
-  z-index: 10;
+  transform: translateX(-50%);
+  z-index: 99999 !important; /* Her şeyin en üstüne çıkartır, tıklamayı engelleyen şeyleri ezer */
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  width: 100%;
+  gap: 6px;
+  width: auto;
+  pointer-events: auto !important; /* Tıklama algılamasını zorunlu açar */
 }
 
 .bottom-phone-label {
@@ -77,62 +78,64 @@
   color: #888888;
   text-transform: uppercase;
   font-weight: 600;
+  pointer-events: none;
 }
 
 .bottom-phone-number {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Cinzel', sans-serif;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 2px;
   background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-decoration: none;
   filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.3));
+  display: block;
+  margin-bottom: 2px;
 }
+
 .copy-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  margin-top: 6px;
-  padding: 4px 12px;
-  height: 28px; /* Kibar ve minimal yükseklik */
-  background: transparent;
-  border: 1px solid rgba(212, 175, 55, 0.5);
+  padding: 4px 14px;
+  height: 28px;
+  background: rgba(18, 18, 18, 0.8);
+  border: 1px solid rgba(212, 175, 55, 0.6);
   border-radius: 6px;
-  cursor: pointer;
+  cursor: pointer !important;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 100000 !important;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Gold Gradyenli Yazı ve İkon Boyutu */
 .copy-btn span {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Cinzel', sans-serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1px;
   background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  pointer-events: none;
 }
 
 .copy-icon {
-  width: 14px;  /* İkon boyutu */
+  width: 14px;
   height: 14px;
-  stroke: #d4af37; /* Gold Çizgi Rengi */
-}
-
-/* Tıklayınca veya Üstüne Gelince */
-.copy-btn:hover {
-  border-color: #d4af37;
-  background: rgba(212, 175, 55, 0.1);
-  transform: translateY(-1px);
+  stroke: #d4af37;
+  pointer-events: none;
 }
 
 .copy-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
+  background: rgba(212, 175, 55, 0.2);
 }
+
     
 
     
@@ -268,33 +271,61 @@
     startRedirect();
   </script>
 <!-- EKRANIN EN ALTINA SABİTLENMİŞ GOLD NUMARA -->
+<!-- EKRANIN EN ALTINA SABİTLENMİŞ GOLD NUMARA & KOPYALA BUTONU -->
 <div class="bottom-phone-box">
   <span class="bottom-phone-label">SİPARİŞ VE DESTEK</span>
-  <a href="tel:+90 546 107 57 89" class="bottom-phone-number">+90 546 107 57 89</a>
-</div>
+  <a href="tel:+90 546 107 57 89" class="bottom-phone-number" id="targetPhone">0546 107 57 89</a>
+  
   <!-- GOLD KOPYALA BUTONU -->
-<button class="copy-btn" onclick="copyPhoneNumber()">
-  <!-- İki Kare Üst Üste (Kopyalama) İkonu -->
-  <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-  </svg>
-  <span id="copyBtnText">Kopyala</span>
-</button>
+  <button type="button" class="copy-btn" id="copyBtn">
+    <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>
+    <span id="copyBtnText">Kopyala</span>
+  </button>
+</div>
 
-<!-- Kopyalama Fonksiyonu -->
+<!-- KOPYALAMA SCRIPT (HER CİHAZDA %100 ÇALIŞAN YÖNTEM) -->
 <script>
-function copyPhoneNumber() {
-  const phoneNum = "05555555555"; // Kendi numaranı buraya yaz
-  navigator.clipboard.writeText(phoneNum).then(() => {
-    const btnText = document.getElementById("copyBtnText");
-    btnText.innerText = "Kopyalandı!";
-    setTimeout(() => {
-      btnText.innerText = "Kopyala";
-    }, 2000);
+  document.getElementById('copyBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Numarayı doğrudan HTML'deki yazıdan çeker
+    const phoneNum = document.getElementById('targetPhone').innerText.trim();
+    
+    // Panoya Kopyalama İşlemi
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(phoneNum).then(showSuccess);
+    } else {
+      // Eski veya Mobil Tarayıcılar İçin Yedek Yöntem
+      const textArea = document.createElement("textarea");
+      textArea.value = phoneNum;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showSuccess();
+      } catch (err) {
+        console.error('Kopyalanamadı', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function showSuccess() {
+      const btnText = document.getElementById("copyBtnText");
+      btnText.innerText = "Kopyalandı!";
+      setTimeout(() => {
+        btnText.innerText = "ŞİMDİ KOPYALA!";
+      }, 2000);
+    }
   });
-}
 </script>
+
   
 </body>
 </html>
