@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yönlendiriliyorsunuz...</title>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="spinner" id="loader"></div>
+    <h2 id="title">Yönlendiriliyorsunuz...</h2>
+    <p id="status">Lütfen bekleyin, adrese aktarılıyorsunuz.</p>
+  </div>
+
+  <script>
+    // 1. Firebase Yapılandırması (Kendi bilgilerini yaz)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDrJFsP59VYp78RkPv9ViKdzk8VXScsi8w",
+      authDomain: "yorumkarekod.firebaseapp.com",
+      databaseURL: "https://yorumkarekod-default-rtdb.firebaseio.com",
+      projectId: "yorumkarekod",
+      storageBucket: "yorumkarekod.firebasestorage.app",
+      messagingSenderId: "853972524347",
+      appId: "1:853972524347:web:988ceb131f3dff64976b1e"
+    };
+
+    // Firebase'i Başlat
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Yönlendirme Fonksiyonu
+    function processRedirect() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const qrId = urlParams.get('id');
+
+      if (!qrId) {
+        showError('Geçersiz Bağlantı', 'QR kod parametresi (ID) bulunamadı!');
+        return;
+      }
+
+      // Firebase'den Veriyi Çek
+      const linkRef = database.ref('qr_links/' + qr1);
+      
+      linkRef.once('value', (snapshot) => {
+        if (snapshot.exists()) {
+          const targetUrl = snapshot.val().target_url;
+          window.location.href = targetUrl;
+        } else {
+          showError('Link Bulunamadı', 'Bu QR koda tanımlı bir adres bulunamadı veya silinmiş.');
+        }
+      }, (error) => {
+        console.error(error);
+        showError('Bağlantı Hatası', 'Veritabanına ulaşılamadı. Lütfen tekrar deneyin.');
+      });
+    }
+
+    function showError(title, message) {
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('title').innerText = title;
+      document.getElementById('status').innerText = message;
+    }
+
+    // Çalıştır
+    processRedirect();
+  </script>
+</body>
+</html>
