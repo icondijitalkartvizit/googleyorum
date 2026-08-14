@@ -90,7 +90,50 @@
   text-decoration: none;
   filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.3));
 }
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 4px 12px;
+  height: 28px; /* Kibar ve minimal yükseklik */
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
 
+/* Gold Gradyenli Yazı ve İkon Boyutu */
+.copy-btn span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.copy-icon {
+  width: 14px;  /* İkon boyutu */
+  height: 14px;
+  stroke: #d4af37; /* Gold Çizgi Rengi */
+}
+
+/* Tıklayınca veya Üstüne Gelince */
+.copy-btn:hover {
+  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-1px);
+}
+
+.copy-btn:active {
+  transform: scale(0.95);
+}
+    
 
     
     .logo-img {
@@ -229,6 +272,29 @@
   <span class="bottom-phone-label">SİPARİŞ VE DESTEK</span>
   <a href="tel:+90 546 107 57 89" class="bottom-phone-number">+90 546 107 57 89</a>
 </div>
+  <!-- GOLD KOPYALA BUTONU -->
+<button class="copy-btn" onclick="copyPhoneNumber()">
+  <!-- İki Kare Üst Üste (Kopyalama) İkonu -->
+  <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+  </svg>
+  <span id="copyBtnText">Kopyala</span>
+</button>
+
+<!-- Kopyalama Fonksiyonu -->
+<script>
+function copyPhoneNumber() {
+  const phoneNum = "05555555555"; // Kendi numaranı buraya yaz
+  navigator.clipboard.writeText(phoneNum).then(() => {
+    const btnText = document.getElementById("copyBtnText");
+    btnText.innerText = "Kopyalandı!";
+    setTimeout(() => {
+      btnText.innerText = "Kopyala";
+    }, 2000);
+  });
+}
+</script>
   
 </body>
 </html>
