@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yönlendiriliyorsunuz...</title>
+  <!-- Google Fonts: Montserrat & Playfair Display -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+  <style>
+    :root {
+      --gold-primary: #d4af37;
+      --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+      --bg-dark: #0a0a0a;
+      --card-bg: rgba(18, 18, 18, 0.85);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-dark);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Siyah Transparan Kaplama */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%);
+      z-index: 1;
+    }
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 90%;
+      max-width: 450px;
+      background: var(--card-bg);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 20px;
+      padding: 35px 25px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 15px rgba(212, 175, 55, 0.15);
+      backdrop-filter: blur(10px);
+    }
+    .logo-img {
+      max-width: 130px;
+      max-height: 100px;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+      display: none;
+    }
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #cccccc;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+    .banner-img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      margin-bottom: 20px;
+      display: none;
+    }
+    .redirect-box {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .status-text {
+      font-size: 14px;
+      color: #e0e0e0;
+      margin-bottom: 12px;
+    }
+    /* Gold Sayaç / Spinner */
+    .timer-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      font-weight: 800;
+      color: #000;
+      font-size: 20px;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img id="brandLogo" class="logo-img" alt="Logo">
+    <h1 id="brandTitle" class="brand-title">FEAT PREMIUM</h1>
+    <p id="brandSubtitle" class="subtitle">Dijital Dönüşüm & İnovasyon</p>
+
+    <img id="promoBanner" class="banner-img" alt="Reklam Banner">
+
+    <div class="redirect-box">
+      <p id="statusMsg" class="status-text">Özel adresinize yönlendiriliyorsunuz...</p>
+      <div id="timer" class="timer-circle">3</div>
+    </div>
+  </div>
+
+  <script>
+    // 1. DYNAMIC CONFIG (Admin panelinden kaydedilen veriler LocalStorage'dan veya Varsayılandan çekilir)
+    const savedConfig = JSON.parse(localStorage.getItem('myBrandConfig')) || {
+      apiKey: "AIzaSyDrJFsP59VYp78RkPv9ViKdzk8VXScsi8w",
+      authDomain: "yorumkarekod.firebaseapp.com",
+      databaseURL: "https://yorumkarekod-default-rtdb.firebaseio.com",
+      projectId: "yorumkarekod",
+      storageBucket: "yorumkarekod.firebasestorage.app",
+      messagingSenderId: "853972524347",
+      appId: "1:853972524347:web:988ceb131f3dff64976b1e"
+      title: "FEAT PREMIUM",
+      subtitle: "Dijital Dönüşüm & İnovasyon",
+      delay: 3,
+      logo: "",
+      banner: "",
+      bg: ""
+    };
+
+    // Tasarım Özelleştirmelerini Uygula
+    if(savedConfig.title) document.getElementById('brandTitle').innerText = savedConfig.title;
+    if(savedConfig.subtitle) document.getElementById('brandSubtitle').innerText = savedConfig.subtitle;
+    if(savedConfig.logo) {
+      const l = document.getElementById('brandLogo');
+      l.src = savedConfig.logo; l.style.display = 'inline-block';
+    }
+    if(savedConfig.banner) {
+      const b = document.getElementById('promoBanner');
+      b.src = savedConfig.banner; b.style.display = 'block';
+    }
+    if(savedConfig.bg) {
+      document.body.style.backgroundImage = `url('${savedConfig.bg}')`;
+    }
+
+    // Firebase'i Başlat
+    let database;
+    try {
+      firebase.initializeApp(savedConfig);
+      database = firebase.database();
+    } catch(e) {
+      console.log("Firebase config eksik veya hatalı!");
+    }
+
+    // Yönlendirme Mantığı
+    function startRedirect() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const qrId = urlParams.get('id');
+
+      if (!qrId) {
+        showError('Kod Bulunamadı', 'Lütfen geçerli bir QR kod okutunuz.');
+        return;
+      }
+
+      if(!database) {
+        showError('Sistem Hatası', 'Firebase yapılandırması yapılmamış!');
+        return;
+      }
+
+      database.ref('qr_links/' + qrId).once('value', (snapshot) => {
+        if (snapshot.exists()) {
+          const targetUrl = snapshot.val().target_url;
+          let seconds = parseInt(savedConfig.delay) || 3;
+          const timerEl = document.getElementById('timer');
+          timerEl.innerText = seconds;
+
+          const interval = setInterval(() => {
+            seconds--;
+            timerEl.innerText = seconds;
+            if (seconds <= 0) {
+              clearInterval(interval);
+              window.location.href = targetUrl;
+            }
+          }, 1000);
+
+        } else {
+          showError('Geçersiz QR', `'${qrId}' koduna ait hedef adres bulunamadı.`);
+        }
+      }, (err) => {
+        showError('Veritabanı Hatası', 'Baglantı kurulamadı.');
+      });
+    }
+
+    function showError(title, msg) {
+      document.getElementById('statusMsg').innerText = msg;
+      document.getElementById('statusMsg').style.color = '#ff5555';
+      document.getElementById('timer').style.display = 'none';
+    }
+
+    startRedirect();
+  </script>
+</body>
+</html>
