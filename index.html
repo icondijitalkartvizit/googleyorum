@@ -57,41 +57,42 @@
   /* KUTUYU YUKARI ÇEKEN SATIR BURASI: */
   transform: translateY(-70px); /* Değeri büyüttükçe kutu daha da yukarı çıkar (Örn: -70px, -100px yapabilirsin) */
 }
-.outer-phone-box {
+.bottom-phone-box {
   position: relative;
   z-index: 2;
-  margin-top: 20px;
+  margin-top: 25px; /* Kutunun altından vereceğimiz mesafe */
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
-.outer-phone-label {
+.bottom-phone-label {
   font-size: 11px;
   letter-spacing: 3px;
-  color: #aaaaaa;
+  color: #888888;
   text-transform: uppercase;
   font-weight: 600;
 }
 
-.outer-phone-number {
+.bottom-phone-number {
   font-family: 'Playfair Display', serif;
-  font-size: 28px; /* Büyük ve Heybetli */
+  font-size: 26px; /* Heybetli Gold Numara */
   font-weight: 800;
   letter-spacing: 2px;
   background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-decoration: none;
-  filter: drop-shadow(0 4px 15px rgba(212, 175, 55, 0.3));
+  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.25));
   transition: transform 0.2s ease;
 }
 
-.outer-phone-number:hover {
-  transform: scale(1.08);
-      }
+.bottom-phone-number:hover {
+  transform: scale(1.05);
+}
+
     
     .logo-img {
       max-width: 130px;
@@ -157,10 +158,12 @@
     <!-- LOGO RESMİ (Yoksa img satırını silebilirsin) -->
     <img src="BURAYA_LOGO_RESIM_LINKI_GELECEK" class="logo-img" alt="Logo" onerror="this.style.display='none'">
     <!-- KUTUNUN DIŞINDAKİ DEV GOLD TELEFON NUMARASI -->
-  <div class="outer-phone-box">
-  <span class="outer-phone-label">GOOGLE YORUM STANDI</span>
-  <a href="tel:+90 546 107 57 89" class="outer-phone-number">0546 107 57 89</a>
-    </div>
+  <!-- KUTUNUN TAMAMEN DIŞINDA VE ALTINDA DURAN GOLD TELEFON NUMARASI -->
+<div class="bottom-phone-box">
+  <span class="bottom-phone-label">İLETİŞİM & DESTEK</span>
+  <a href="tel:+90 546 107 57 89" class="bottom-phone-number">0546 107 57 89</a>
+</div>
+
     
     <!-- MARKA VE SLOGAN -->
     <h1 class="brand-title">ICON DİJİTAL DÖNÜŞÜM</h1>
