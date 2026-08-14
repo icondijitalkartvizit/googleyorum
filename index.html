@@ -58,18 +58,21 @@
   transform: translateY(-70px); /* Değeri büyüttükçe kutu daha da yukarı çıkar (Örn: -70px, -100px yapabilirsin) */
 }
 .bottom-phone-box {
-  position: relative;
-  z-index: 2;
-  margin-top: 25px; /* Kutunun altından vereceğimiz mesafe */
+  position: fixed;
+  bottom: 25px; /* Ekranın alt kenarından mesafe */
+  left: 50%;
+  transform: translateX(-50%); /* Tam yatayda ortalar */
+  z-index: 10;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
+  width: 100%;
 }
 
 .bottom-phone-label {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 3px;
   color: #888888;
   text-transform: uppercase;
@@ -78,20 +81,16 @@
 
 .bottom-phone-number {
   font-family: 'Playfair Display', serif;
-  font-size: 26px; /* Heybetli Gold Numara */
+  font-size: 24px;
   font-weight: 800;
   letter-spacing: 2px;
   background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-decoration: none;
-  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.25));
-  transition: transform 0.2s ease;
+  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.3));
 }
 
-.bottom-phone-number:hover {
-  transform: scale(1.05);
-}
 
     
     .logo-img {
@@ -156,14 +155,7 @@
 
   <div class="container">
     <!-- LOGO RESMİ (Yoksa img satırını silebilirsin) -->
-    <img src="BURAYA_LOGO_RESIM_LINKI_GELECEK" class="logo-img" alt="Logo" onerror="this.style.display='none'">
-    <!-- KUTUNUN DIŞINDAKİ DEV GOLD TELEFON NUMARASI -->
-  <!-- KUTUNUN TAMAMEN DIŞINDA VE ALTINDA DURAN GOLD TELEFON NUMARASI -->
-<div class="bottom-phone-box">
-  <span class="bottom-phone-label">İLETİŞİM & DESTEK</span>
-  <a href="tel:+90 546 107 57 89" class="bottom-phone-number">0546 107 57 89</a>
-</div>
-
+    <img src="BURAYA_LOGO_RESIM_LINKI_GELECEK" class="logo-img" alt="Logo" onerror="this.style.display='none'"
     
     <!-- MARKA VE SLOGAN -->
     <h1 class="brand-title">ICON DİJİTAL DÖNÜŞÜM</h1>
@@ -232,5 +224,11 @@
 
     startRedirect();
   </script>
+<!-- EKRANIN EN ALTINA SABİTLENMİŞ GOLD NUMARA -->
+<div class="bottom-phone-box">
+  <span class="bottom-phone-label">İLETİŞİM & DESTEK</span>
+  <a href="tel:+905555555555" class="bottom-phone-number">0555 555 55 55</a>
+</div>
+  
 </body>
 </html>
