@@ -75,7 +75,7 @@
       }
 
       // Firebase'den Veriyi Çek
-      const linkRef = database.ref('qr_links/' + qr1);
+      const linkRef = database.ref('qr_links/' + qrId);
       
       linkRef.once('value', (snapshot) => {
         if (snapshot.exists()) {
